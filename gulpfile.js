@@ -1,16 +1,14 @@
-var elixir = require('laravel-elixir');
+var gulp = require('gulp');
+var browserify = require('browserify');
+var babelify = require('babelify');
+var source = require('vinyl-source-stream');
 
-/*
- |--------------------------------------------------------------------------
- | Elixir Asset Management
- |--------------------------------------------------------------------------
- |
- | Elixir provides a clean, fluent API for defining some basic Gulp tasks
- | for your Laravel application. By default, we are compiling the Less
- | file for our application, as well as publishing vendor resources.
- |
- */
+gulp.task('browserify', function() {
+	return browserify('resources/assets/js/app.js')
+				.transform(babelify, { stage: 0 })
+				.bundle();
+});
 
-elixir(function(mix) {
-    mix.less('app.less');
+gulp.task('watch', function() {
+	gulp.watch('**/*.js', ['browserify']);
 });
